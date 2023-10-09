@@ -1,0 +1,205 @@
+<div style="position: absolute; left: 282px;" id="posts">
+    {% for post in posts %}
+    <div class="card border-dark" style="width: 75rem; margin: auto;">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h6><a style="text-decoration: none;" href="/{{post.user.username}}/profile"><span class="fs-5" >{{post.user.username}}</span></a></h6>
+            
+            <div class="d-flex flex-row-reverse">
+                {% if user.id == post.author_id %}
+                <div class="btn-group">
+                    <img data-bs-toggle="dropdown" style="width: 25px;height:25px;cursor: pointer;" src="/static/three-dots.png">
+                    <ul class="dropdown-menu dropdown-menu-end dark">
+                        <li> <a href="/edit-post/{{post.id}}" class="dropdown-item">Edit</a> </li>
+                        <li><span style="cursor: pointer;" class="dropdown-item"><p data-bs-toggle="modal" data-bs-target="#DeletePost" style="margin: 0px;">Delete Post</p></span></li>
+                    </ul>
+
+                    <div class="modal fade" id="DeletePost" tabindex="-1" aria-labelledby="DeletePostLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="DeletePostLabel">Delete Post?</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              Are you sure you want to delete to this Post?
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              <a href="/delete-post/{{post.id}}"><button type="button" class="btn btn-danger">Delete</button></a>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                {% endif %}
+            </div>
+
+        </div>
+
+        <div class="card-body">
+            <div class="card-text">{{post.text}}</div>
+
+            <br />
+
+
+        </div>
+        <div class="card-footer">
+            
+            <div>
+                {% if current_user.id in post.likes|map(attribute="author_id")|list %}
+                <a href="/like-post/{{post.id}}"><img style="width: 35px;height:35px;" src="/static/liked.png"></a>
+                {% else %}
+                <a href="/like-post/{{post.id}}"><img style="width: 35px;height:35px;" src="/static/like thin.png"></a>
+                {% endif %}
+
+                <a style="text-decoration: none;" data-bs-toggle="collapse" href="#comments-{{post.id}}" role="button"><img style="width: 35px;height:35px;cursor: pointer;margin-left: 10px;" src="/static/bubble-chat thin.png"></a>
+                
+            </div>
+            
+            <div><strong><a class="fs-5" href="/{{post.id}}/likes"></a></strong></div>
+
+            <span data-bs-toggle="modal" data-bs-target="#LikeModal" style="font-size: 20px; margin-right: 15px; cursor: pointer;"><strong>{{ post.likes|length }} likes</strong></span>
+
+            <div class="modal fade" id="LikeModal" tabindex="-1" aria-labelledby="LikeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <span><strong><p style="font-size: 20px;" id="LikeModalLabel">Likes</p></strong></span>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="container-fluid">
+                        {% for like in post.likes %}
+                            {% if current_user.id != like.author_id %}
+                            <div class="row">
+
+                                <div class="col-8"><span><strong><p style="font-size: 20px;"><a style="text-decoration: none; color: black;" href="/{{like.user.username}}/profile">{{like.user.username}}</a></p></strong></span></div>
+
+                                    {% if like.user.id != current_user.id %}
+                                        {% if current_user.is_following(like.user) %}
+                                            <div class="col"><span><strong><p style="font-size: 20px;"><a style="text-decoration: none; color: black;" href="/unfollow/{{ like.user.username }}"><button type="button" class="btn btn-lg btn-secondary">Following</button></a></p></strong></span></div>
+                                        {% else %}
+                                            <div class="col"><span><strong><p style="font-size: 20px;"><a style="text-decoration: none; color: black;" href="/follow/{{ like.user.username }}"><button type="button" class="btn btn-lg btn-secondary">Follow</button></a></p></strong></span></div>
+                                        {% endif %}
+                                    {% else %}
+                                        <div class="col"><span><strong><p style="font-size: 20px;"><a style="text-decoration: none; color: black;" href="/unfollow/{{ like.user.username }}"><button type="button" class="btn btn-lg btn-secondary">Remove</button></a></p></strong></span></div>
+                                    {% endif %}
+
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+            <br>
+
+            <p class="card-text">
+                {% if post.captions %}
+                <a style="text-decoration: none;" data-bs-toggle="collapse" href="#captions-{{post.id}}" role="button"> <small>View captions</small> </a>
+                {% else %}
+                <small class="text-muted">No captions</small>
+                {% endif %}
+            </p>
+
+
+            {% if post.captions %}
+                <div class="collapse" id="captions-{{post.id}}">
+                    <div class="card">
+                        <div class="card-body" id="captions-expanded-{{post.id}}">
+                            <div class="d-flex justify-content-between align-items-center">
+                                {% for caption in post.captions %}
+                                    {{ caption.captions }}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+
+            {% endif %}
+
+
+            <form class="input-group mb-3" method="POST" action="/create-comment/{{post.id}}">
+                <input style="border: 1px solid;" type="text" id="comment" name="comment" class="form-control" placeholder="Add a comment..." />
+                <button type="submit" class="btn btn-primary">Post</button>
+            </form>
+
+
+            <p class="card-text">
+                {% if post.comments|length > 0 %}
+                <a style="text-decoration: none;" data-bs-toggle="collapse" href="#comments-{{post.id}}" role="button"> <small>View all {{post.comments|length}} Comments</small> </a>
+                {% else %}
+                <small class="text-muted">No Comments</small>
+                {% endif %}
+            </p>
+
+
+
+            <div class="collapse" id="comments-{{post.id}}">
+                <div class="card">
+                    <div class="card-body" id="comments-expanded-{{post.id}}">
+                        {% for comment in post.comments %}
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <a href="/{{comment.user.username}}/profile">{{comment.user.username}}</a>:
+                                {{comment.comment}}
+                            </div>
+                            <div>
+                                <small style="margin-right: 15px;" class="text-muted"> {{comment.date_posted}}</small>
+
+                                {% if user.id == comment.author_id or user.id == post.author_id %}
+                                <div class="btn-group">
+                                    <img data-bs-toggle="dropdown" style="width: 25px;height:25px;cursor: pointer;" src="/static/three-dots.png">
+                                    <ul class="dropdown-menu dropdown-menu-lg-end">
+
+                                        {% if user.id == comment.author_id %}
+                                        <li> <a href="/edit-comment/{{comment.id}}" class="dropdown-item">Edit</a></li>
+                                        {% endif %}
+                                        <li><span style="cursor: pointer;" class="dropdown-item"><p data-bs-toggle="modal" data-bs-target="#DeleteComment" style="margin: 0px;">Delete</p></span></li>
+                                        <!-- <li><button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal1">Delete</button></li> -->
+
+
+                                    </ul>
+                                    <div class="modal fade" id="DeleteComment" tabindex="-1" aria-labelledby="DeleteCommentLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                          <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="DeleteCommentLabel">Delete comment?</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                              Are you sure you want to delete to this comment?
+                                            </div>
+                                            <div class="modal-footer">
+                                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                              <a href="/delete-comment/{{comment.id}}"><button type="button" class="btn btn-danger">Delete</button></a>
+                                            </div>
+                                          </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-muted">{{post.date_posted}}</div>
+        </div>
+    </div>
+    <br> {% endfor %}
+
+</div>
+
+
+
+
+

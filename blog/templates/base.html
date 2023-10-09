@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+
+    <script src="https://kit.fontawesome.com/04ea5c6364.js" crossorigin="anonymous"></script>
+
+
+    <title>{% block title %}{% endblock %}</title>
+</head>
+
+<body>
+
+
+    <div style="width: 245px; height: 100%; background: #0d74f5; position: fixed; top: 0; left: 0; padding: 20px 30px;">
+        <a style="color: white; position: relative; left: 25px;" class="navbar-brand" href="/home"><span><h3>Blog Lite</h3></span></a>
+        
+        <ul>
+            
+            <a style="color: white; position: relative; left: 25px; text-decoration: none;" href="/home"><i style="color: white; position: relative; left: -34px; bottom:-23px;" class="fa-solid fa-house fa-xl"></i><span><h5>Home</h5></span></a>
+
+            <a style="color: white; position: relative; left: 25px; bottom:-23px; text-decoration: none;" href="/search"><i style="color: white; position: relative; left: -34px; bottom:-23px;" class="fa-solid fa-magnifying-glass fa-xl"></i><span><h5>Search</h5></span></a>
+
+            <a style="color: white; position: relative; left: 25px; bottom:-39px; text-decoration: none;" href="/explore"><i style="color: white; position: relative; left: -34px; bottom:-23px;" class="fa-regular fa-compass fa-xl"></i><span><h5>Explore</h5></span></a>
+
+            <a style="color: white; position: relative; left: 25px; bottom:-55px; text-decoration: none;" href="/create-post"><i style="color: white; position: relative; left: -34px; bottom:-23px;" class="fa-regular fa-square-plus fa-xl"></i><span><h5>Create</h5></span></a>
+
+            <a style="color: white; position: relative; left: 25px; bottom:-71px; text-decoration: none;" href="/{{current_user.username}}/profile"><i style="color: white; position: relative; left: -34px; bottom:-23px;" class="fa-regular fa-user fa-xl"></i><span><h5>Profile</h5></span></a>
+
+
+
+            
+
+        </ul>
+    </div>
+
+
+    <div style="position: absolute; left: 53px; top:650px;" class="btn-group dropup">
+        <span data-bs-toggle="dropdown" style="cursor: pointer;"><i style="color: white;" class="fa-solid fa-bars fa-xl"></i><h5 style="color: white; position: relative; left:34px; bottom: 25px;">More</h5></span>
+    
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/logout">Log out</a></li>
+            <li><span style="cursor: pointer;" class="dropdown-item"><p data-bs-toggle="modal" data-bs-target="#DeleteAccount" style="margin: 0px;">Delete Account</p></span></li>
+        </ul>
+
+        <div class="modal fade" id="DeleteAccount" tabindex="-1" aria-labelledby="DeleteAccountLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="DeleteAccountLabel">Delete Account?</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  Are you sure you want to delete to this Account?
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <a href="/delete-my-account/{{current_user.id}}"><button type="button" class="btn btn-danger">Delete</button></a>
+                </div>
+              </div>
+            </div>
+        </div>
+
+    </div>
+
+    
+
+
+
+    <!-- <nav class="navbar navbar-expand-sm bg-primary navbar-dark fixed-top">
+
+        <div class="container-fluid">
+
+            <a style="margin-left: 70px;" class="navbar-brand" href="/home">Blog Lite</a>
+
+            <div class="d-flex justify-content-end">
+
+                <a style="margin-right: 15px; margin-top: 2px;" href="/create-post"><img src="/static/add white.png"
+                        style="width: 35px;height:35px;"></a>
+
+                <div style="margin-right: 10px;" class="btn-group dropdown">
+                    <img src="/static/profile-icon white.png" class="img-fluid" data-bs-toggle="dropdown"
+                        style="width: 40px;height:40px;cursor: pointer;">
+                    <ul class="dropdown-menu dropdown-menu-lg-end dark">
+                        <li><a class="dropdown-item disabled" href="">{{current_user.username}}</a></li>
+                        <li><a class="dropdown-item" href="/home">Home</a></li>
+                        <li><a class="dropdown-item" href="/{{current_user.username}}/profile">My Profile</a></li>
+                        <li><a class="dropdown-item" href="/delete-my-account/{{current_user.id}}">Delete Account</a></li>
+                        <li><span class="dropdown-item" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#DeleteAccountModal">Delete Account</span></li>
+
+                        <li><a class="dropdown-item" href="/logout">Explore</a></li>
+                        <li><a class="dropdown-item" href="/logout">Log out</a></li>
+
+                    </ul>
+                </div>
+                
+            </div>
+
+            <div class="modal fade" id="DeleteAccountModal" tabindex="-1" aria-labelledby="DeleteAccountModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="DeleteAccountModalLabel">Delete</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      Delete my Account
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-danger">Delete</button>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+            /delete-my-account/{{current_user.id}}
+
+
+            
+
+
+
+
+
+        </div>
+
+
+
+    </nav> -->
+
+    
+
+
+    {% block content %}{% endblock %}
+
+
+
+
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="check-circle-fill" viewBox="0 0 16 16">
+            <path
+                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z">
+            </path>
+        </symbol>
+        <symbol id="info-fill" viewBox="0 0 16 16">
+            <path
+                d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z">
+            </path>
+        </symbol>
+        <symbol id="exclamation-triangle-fill" viewBox="0 0 16 16">
+            <path
+                d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z">
+            </path>
+        </symbol>
+    </svg>
+
+
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    {% if category == "error" %}
+
+    <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center fixed-top" role="alert" class="card border-dark" style="width: 50rem; margin: auto;">
+      <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"></use></svg>
+      <div>{{ message }}</div>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" fdprocessedid="o2dd0z"></button>
+    </div>
+
+    {% else %}
+
+    <div class="alert alert-success alert-dismissible fade show d-flex align-items-center fixed-top" role="alert" class="card border-dark" style="width: 50rem; margin: auto;">
+        <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"></use></svg>
+        <div >{{ message }}</div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" fdprocessedid="o2dd0z"></button>
+      </div>
+    </div>
+    {% endif %}
+
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+
+</body>
+
+</html>

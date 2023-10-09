@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+
+{% block title %} {{ username }} {% endblock %}
+
+{% block content %}
+
+<br>
+<br>
+
+<div style="position: absolute; left: 720px;">
+  <div align="center">
+    <p><span style="font-size: 28px;">{% block header %} {{ username }} {% endblock %}</span>
+
+      {% if user.id != current_user.id %}
+      {% if current_user.is_following(user) %}
+      <a href="/unfollow/{{ username }}"><button type="button" class="btn btn-lg btn-primary">Following</button></a>
+      {% else %}
+      <a href="/follow/{{ username }}"><button type="button" class="btn btn-lg btn-primary">Follow</button></a>
+      {% endif %}
+      {% endif %}
+
+    </p>
+
+    <p>
+    <p style="text-decoration: none; color: black; display: inline; font-size: 20px; margin-right: 15px;">
+      <strong>{{own_posts_length}}</strong> posts
+    </p>
+
+    <span data-bs-toggle="modal" data-bs-target="#FollowersModal"
+      style="font-size: 20px; margin-right: 15px; cursor: pointer;"><strong>{{user.followers.count()}}</strong>
+      followers</span>
+
+    <div class="modal fade" id="FollowersModal" tabindex="-1" aria-labelledby="FollowersModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <span><strong>
+                <p style="font-size: 20px;" id="FollowersModalLabel">Followers</p>
+              </strong></span>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="container-fluid">
+              {% if current_user in followers %}
+              <div class="row">
+                <div class="col-8"><span><strong>
+                      <p style="font-size: 20px;">{{current_user.username}}</p>
+                    </strong></span></div>
+              </div>
+              {% endif %}
+
+              <br>
+
+              {% for follower in followers %}
+              {% if current_user.id != follower.id %}
+              <div class="row">
+                <div class="col-8"><span><strong>
+                      <p style="font-size: 20px;"><a style="text-decoration: none; color: black;"
+                          href="/{{ follower.username }}/profile">{{ follower.username }}</a></p>
+                    </strong></span></div>
+
+                {% if user.id != current_user.id %}
+                {% if current_user.is_following(follower) %}
+
+                <div class="col"><span><strong>
+                      <p style="font-size: 20px;"><a style="text-decoration: none; color: black;"
+                          href="/unfollow/{{ follower.username }}"><button type="button"
+                            class="btn btn-lg btn-secondary">Following</button></a></p>
+                    </strong></span></div>
+
+                {% else %}
+
+                <div class="col"><span><strong>
+                      <p style="font-size: 20px;"><a style="text-decoration: none; color: black;"
+                          href="/follow/{{ follower.username }}"><button type="button"
+                            class="btn btn-lg btn-primary">Follow</button></a></p>
+                    </strong></span></div>
+
+                {% endif %}
+
+                {% else %}
+
+                <div class="col"><span><strong>
+                      <p style="font-size: 20px;"><a style="text-decoration: none; color: black;"
+                          href="/unfollow/{{ follower.username }}"><button type="button"
+                            class="btn btn-lg btn-secondary">Remove</button></a></p>
+                    </strong></span></div>
+
+                {% endif %}
+
+              </div>
+              <br>
+              {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <span data-bs-toggle="modal" data-bs-target="#FollowingModal"
+      style="font-size: 20px; margin-right: 15px; cursor: pointer;"><strong>{{user.followed.count()}}</strong>
+      following</span>
+
+    <div class="modal fade" id="FollowingModal" tabindex="-1" aria-labelledby="FollowingModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <span><strong>
+                <p style="font-size: 20px;" id="FollowingModalLabel">Following</p>
+              </strong></span>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="container-fluid">
+              {% if current_user in followings %}
+              <div class="row">
+                <div class="col-8"><span><strong>
+                      <p style="font-size: 20px;">{{current_user.username}}</p>
+                    </strong></span></div>
+              </div>
+              {% endif %}
+
+              <br>
+
+              {% for following in followings %}
+              {% if current_user.id != following.id %}
+              <div class="row">
+                <div class="col-8"><span><strong>
+                      <p style="font-size: 20px;"><a style="text-decoration: none; color: black;"
+                          href="/{{ following.username }}/profile">{{ following.username }}</a></p>
+                    </strong></span></div>
+
+                {% if user.id != current_user.id %}
+                {% if current_user.is_following(following) %}
+
+                <div class="col"><span><strong>
+                      <p style="font-size: 20px;"><a style="text-decoration: none; color: black;"
+                          href="/unfollow/{{ following.username }}"><button type="button"
+                            class="btn btn-lg btn-secondary">Following</button></a></p>
+                    </strong></span></div>
+
+                {% else %}
+
+                <div class="col"><span><strong>
+                      <p style="font-size: 20px;"><a style="text-decoration: none; color: black;"
+                          href="/follow/{{ following.username }}"><button type="button"
+                            class="btn btn-lg btn-primary">Follow</button></a></p>
+                    </strong></span></div>
+
+                {% endif %}
+
+                {% else %}
+
+                <div class="col"><span><strong>
+                      <p style="font-size: 20px;"><a style="text-decoration: none; color: black;"
+                          href="/unfollow/{{ following.username }}"><button type="button"
+                            class="btn btn-lg btn-secondary">Following</button></a></p>
+                    </strong></span></div>
+
+                {% endif %}
+
+              </div>
+              <br>
+              {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    </p>
+
+    {% if user.id == current_user.id %}
+    <a href="/edit-user/{{user.id}}"><button type="button" class="btn btn-lg btn-primary">Edit
+        Profile</button></a>
+    {% endif %}
+  </div>
+</div>
+
+
+
+
+
+</div>
+
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
+
+{% include 'base_post.html' %}
+
+{% endblock %}

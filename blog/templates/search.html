@@ -1,0 +1,34 @@
+{% extends "base.html" %} 
+
+{% block title %}  Search Username  {% endblock %} 
+
+{% block content %}
+<form method="POST">
+<input style="position: absolute; left: 810px; top: 100px;" type="text" name="search_text" placeholder="Search Username...">
+{% if users %}
+<input style="position: absolute; left: 810px; top: 100px;" type="text" name="search_text" placeholder="{{searched_text}}">
+{% endif %}
+<div style="position: absolute; left: 1005px; top: 90px;"><button type="submit" class="btn btn-lg btn-primary">Search</button></div>
+<!-- <button style="position: absolute; left: 1005px; top: 100px;" type="submit"><span><i class="fa-solid fa-magnifying-glass"></i></span></button> -->
+
+{% if users %}
+
+<table class="table table-borderless" style="position: absolute; left: 810px; top: 140px; width: 70px;">
+    <thead>
+      <tr>
+        <th colspan="1">Users</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr><td colspan="1" ><span><h6><a style="text-decoration: none;" href="/{{user.username}}/profile"><span class="fs-5" >{{user.username}}</span></a></h6></span></td></tr>
+        <br>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+{% endif %}
+</form>
+{% endblock %}

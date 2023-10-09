@@ -1,0 +1,42 @@
+{% extends "base.html" %} 
+
+{% block title %} {{ post.id }} likes {% endblock %} 
+
+{% block content %}
+
+<br>
+<br>
+<br>
+
+<style>
+    div.list--centre-justify{
+        display: grid; 
+        place-items: center;
+    }
+</style>
+
+
+<div class="list--centre-justify">
+{% for like in likes %}
+<ul class="list-group list-group-horizontal">
+        
+        {% if current_user.id != like.author_id %}
+        <li class="list-group-item"><a href="/{{like.user.username}}/profile">{{like.user.username}}</a></li>
+        
+            {% if like.user.id != current_user.id %}
+                {% if current_user.is_following(like.user) %}
+                    <li class="list-group-item"><a href="/unfollow/{{ like.user.username }}"><button type="button" class="btn btn-lg btn-secondary">Following</button></a></li>
+                {% else %}
+                    <li class="list-group-item"><a href="/follow/{{ like.user.username }}"><button type="button" class="btn btn-lg btn-primary">Follow</button></a></li>
+                {% endif %}
+
+            {% else %}
+                    <li class="list-group-item"><a href="/unfollow/{{ like.user.username }}"><button type="button" class="btn btn-lg btn-secondary">Remove</button></a></li>
+            {% endif %}
+        {% endif %}
+
+    </ul>
+{% endfor %}
+</div>
+
+{% endblock %}

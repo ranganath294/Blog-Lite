@@ -1,0 +1,21 @@
+{% extends "base.html" %} 
+{% block title %} New Post {% endblock %} 
+{% block content %}
+<br>
+<br>
+<br>
+
+<h1 style="position: absolute; left: 810px;">New Post</h1>
+<br>
+<br>
+<br>
+<br>
+<form style="position: absolute; left: 290px;" method="POST">
+    <div class="card border-dark" style="width: 75rem; margin: auto;"><textarea name="text" id="text" class="form-control" placeholder="Enter the post here..."></textarea></div>
+    <br>
+    <div class="card border-dark" style="width: 60rem; margin: auto;"><textarea name="captions" id="captions" class="form-control" placeholder="Enter captions here..."></textarea></div>
+    <br>
+    <div align="center"><button type="submit" class="btn btn-lg btn-primary">Post</button></div>
+</form>
+
+{% endblock %}

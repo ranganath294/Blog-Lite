@@ -1,0 +1,45 @@
+{% extends "base.html" %} 
+
+{% block title %} {{ user.username }} {% endblock %} 
+
+{% block content %}
+
+<br>
+<br>
+<br>
+
+<style>
+    div.list--centre-justify{
+        display: grid; 
+        place-items: center;
+    }
+</style>
+
+
+<div class="list--centre-justify">
+{% if current_user in followings %}
+<li class="list-group-item">{{current_user.username}}</li>
+{% endif %}
+{% for following in followings %}
+<ul class="list-group list-group-horizontal">
+        
+        {% if current_user.id != following.id %}
+        <li class="list-group-item"><a href="/{{ following.username }}/profile">{{ following.username }}</a></li>
+        
+            {% if user.id != current_user.id %}
+                {% if current_user.is_following(following) %}
+                    <li class="list-group-item"><a href="/unfollow/{{ following.username }}"><button type="button" class="btn btn-lg btn-secondary">Following</button></a></li>
+                {% else %}
+                    <li class="list-group-item"><a href="/follow/{{ following.username }}"><button type="button" class="btn btn-lg btn-primary">Follow</button></a></li>
+                {% endif %}
+
+            {% else %}
+                    <li class="list-group-item"><a href="/unfollow/{{ following.username }}"><button type="button" class="btn btn-lg btn-secondary">Following</button></a></li>
+            {% endif %}
+        {% endif %}
+
+    </ul>
+{% endfor %}
+</div>
+
+{% endblock %}

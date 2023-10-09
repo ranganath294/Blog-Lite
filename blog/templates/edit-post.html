@@ -1,0 +1,22 @@
+{% extends "base.html" %} 
+{% block title %} Edit Post {{ post.id }} {% endblock %} 
+{% block content %}
+<br>
+<br>
+<br>
+
+<h1 style="position: absolute; left: 805px;">Edit Post</h1>
+<br>
+<br>
+<br>
+<br>
+<form style="position: absolute; left: 290px;" method="POST">
+    <div class="card border-dark" style="width: 75rem; margin: auto;"><textarea name="text" id ="text" class="form-control">{{post.text}}</textarea></div>
+    <br />
+    <div class="card border-dark" style="width: 60rem; margin: auto;"><textarea name="captions" id ="captions" class="form-control">{{captions.captions}}</textarea></div>
+    <br />
+    <div align="center"><button type="submit" class="btn btn-lg btn-primary">Done</button></div>
+</form>
+<br>
+<div style="position: absolute; left: 852px; top: 410px;"><a href="/{{current_user.username}}/profile"><button type="button" class="btn btn-lg btn-secondary">Back</button></a></div>
+{% endblock %}

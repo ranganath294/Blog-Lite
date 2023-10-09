@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %} Edit User {% endblock %}
+{% block content %}
+<form style="position: absolute; left: 720px; top: 100px;" method="POST">
+    <div class="form-group">
+
+        <h3 align="center">Edit User</h3>
+        <br>
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" placeholder="{{user.username}}" />
+        <br>
+        <br>
+        <label for="email">Email Address</label>
+        <input type="text" id="email" name="email" placeholder="{{user.email}}" />
+        <br>
+        <br>
+        <div align="center"><button type="submit" class="btn btn-lg btn-primary">Done</button></div>
+    </div>
+</form>
+<div style="position: absolute; left: 830px; top: 340px;"><a href="/{{current_user.username}}/profile"><button
+            type="button" class="btn btn-lg btn-secondary">Back</button></a></div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %} 
+{% block title %} Edit Comment {{ comment.id }} {% endblock %} 
+{% block content %}
+<br>
+<br>
+<br>
+
+<h1 style="position: absolute; left: 810px;">Edit Comment</h1>
+<br>
+<br>
+<br>
+<br>
+<form style="position: absolute; left: 290px;" method="POST">
+    <div class="card border-dark" style="width: 75rem; margin: auto;"><textarea name="text" id ="text" class="form-control">{{comment.comment}}</textarea></div>
+    <br />
+    <div align="center"><button type="submit" class="btn btn-lg btn-primary">Done</button></div>
+</form>
+<br>
+<br>
+<div style="position: absolute; left: 852px; top: 320px;"><a href="/{{current_user.username}}/profile"><button type="button" class="btn btn-lg btn-secondary">Back</button></a></div>
+{% endblock %}
